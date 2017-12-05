@@ -21,7 +21,9 @@ class MySQLInterface{
     }
 
     if(count($out) == 1){
-      $out = $out[0];
+      return $out[0];
+    }else if(!count($out)){
+      return false;
     }
 
     return $out;
