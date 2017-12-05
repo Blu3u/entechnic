@@ -19,7 +19,15 @@ class MySQLInterface{
   @param assoc array with params
   @returns query result. */
   public static function Exec(string $sqlQry, array $sqlParams = null){
-    return static::$dbHandle->prepare($sqlQry)->execute($sqlParams);
+    $prepStatement = static::$dbHandle->prepare($sqlQry);
+    $prepStatement->execute($sqlParams);
+    $out = array();
+
+    while($result = $prepStatement->fetch(PDO::FETCH_ASSOC)){
+      array_push($out, $result);
+    }
+
+    return $out;
   }
 }
 
