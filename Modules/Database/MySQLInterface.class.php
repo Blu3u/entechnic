@@ -1,13 +1,15 @@
+<?php
 /* Interface class for MySQL database */
 
-<?php
 class MySQLInterface{
   public static $dbHandle;
+
+  private function __construct(){}
 
 /* Execute query as safe prepared statement.
   @param templated SQL statement
   @param assoc array with params
-  @returns query result. */
+  @returns query results array if more than 1 row received. */
   public static function Exec(string $sqlQry, array $sqlParams = null){
     $prepStatement = static::$dbHandle->prepare($sqlQry);
       $prepStatement->execute($sqlParams);
@@ -18,20 +20,24 @@ class MySQLInterface{
       array_push($out, $result);
     }
 
+    if(count($out) == 1){
+      $out = $out[0];
+    }
+
     return $out;
   }
 
   /* Connect with database. */
-    public static function Init(){
-      try {
-        static::$dbHandle = new PDO('mysql:host=localhost;dbname=entechnic', 'root', '');
-      }
-      catch (PDOException $exception) {
-          print $exception->getMessage();
-          die('err');
-      }
+  public static function Init(){
+    try {
+      static::$dbHandle = new PDO('mysql:host=localhost;dbname=entechnic', 'root', '');
     }
-
-  MySQLInterface::Init();
+    catch (PDOException $exception) {
+        print $exception->getMessage();
+        die('err');
+    }
+  }
 }
+
+MySQLInterface::Init();
 ?>
