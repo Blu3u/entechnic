@@ -11,32 +11,39 @@ class MySQLInterface{
   @param assoc array with params
   @returns query results array if more than 1 row received. */
   public static function Exec(string $sqlQry, array $sqlParams = null){
+    $outputData = [];
+
     $prepStatement = static::$dbHandle->prepare($sqlQry);
       $prepStatement->execute($sqlParams);
 
-    $out = [];
-
     while($result = $prepStatement->fetch(PDO::FETCH_ASSOC)){
-      array_push($out, $result);
+      array_push($outputData, $result);
     }
 
-    if(count($out) == 1){
-      return $out[0];
-    }else if(!count($out)){
-      return false;
-    }
+    if(count($outputData) == 1) return $outputData[0];
+    else if(!count($outputData)) return false;
 
-    return $out;
+    return $outputData;
   }
 
-  /* Connect with database. */
+/* Disconnect from the database. */
+  public static function Disconnect(){
+    static::$dbHandle = null;
+  }
+
+/* Reconnect to database after disconnecting. */
+  public static function Reconnect(){
+    static::Init();
+  }
+
+/* Connect with database. */
   public static function Init(){
     try {
       static::$dbHandle = new PDO('mysql:host=localhost;dbname=entechnic', 'root', '');
     }
     catch (PDOException $exception) {
         print $exception->getMessage();
-        die('err');
+        die('Database connection error. Try again later!');
     }
   }
 }
