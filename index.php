@@ -1,4 +1,5 @@
 <?php
+require_once 'Core\Auth\SessionInterface.class.php';
 require_once 'Modules\Database\MySQLInterface.class.php';
 require_once 'Modules\Interface\HTMLInterface.class.php';
 ?>

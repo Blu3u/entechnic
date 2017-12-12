@@ -26,6 +26,8 @@ CREATE TABLE UserProfiles (
   userLastName VARCHAR(64) NULL,
   userDescription VARCHAR(1024) NULL,
   userRegistrationDate DATE NULL,
+	userBirthDate DATE NULL,
+	userGender DATE NULL,
   userAvatarIndex INTEGER UNSIGNED ZEROFILL NULL,
   PRIMARY KEY(idUserProfiles),
   FOREIGN KEY(Users_idUsers)
@@ -92,6 +94,7 @@ CREATE TABLE Answers (
   idAnswers INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
   Exercises_idExercises INTEGER UNSIGNED NOT NULL,
   answerDescription VARCHAR(256) NULL,
+	answerIndex VARCHAR(256) NULL,
   PRIMARY KEY(idAnswers),
   FOREIGN KEY(Exercises_idExercises)
     REFERENCES Exercises(idExercises)

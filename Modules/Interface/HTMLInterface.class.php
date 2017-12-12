@@ -11,7 +11,7 @@ class HTMLInterface{
     $userOnly = '';
     $adminOnly = '';
 
-    switch(){
+    switch(SessionInterface::GetUserState()){
       case UserState::Admin: {
 
       }
@@ -47,6 +47,8 @@ HTML;
       </li>
     </ul>
 HTML;
+
+  echo $navigationText;
   }
 
 

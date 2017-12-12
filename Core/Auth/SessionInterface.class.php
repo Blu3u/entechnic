@@ -16,7 +16,7 @@ class SessionInterface{
   }
 
   public static function GetUserState(){
-    return $userState;
+    return static::$userState;
   }
 
   public static function GetAuth(){
@@ -30,16 +30,16 @@ class SessionInterface{
 /* Detect user login attempt or existing session */
   private static function AuthorizeUser(){
     if(isset($_POST['usrLogin']) && isset($_POST['usrPasswd'])){
-      $qryStatement = 'SELECT id, userName, isAdmin FROM users WHERE userName = :name AND userPass = SHA2(:pass,256) LIMIT 1';
+      $qryStatement = 'SELECT idUsers, userMail, userPrivileges FROM users WHERE userMail = :name AND userPass = SHA2(:pass,256) LIMIT 1';
       $qryParams = [':name' => $_POST['usrLogin'], ':pass' => $_POST['usrLogin']];
 
       if($qryResult = MySQLInterface::Exec($qryStatement, $qryParams)){ /* logging in */
-        if($qryResult['isAdmin']){
+        if($qryResult['userPrivileges']){
           static::$userState = UserState::Admin;
-          static::SetAuth($qryResult['id']);
         }else{
           static::$userState = UserState::User;
         }
+        static::SetAuth($qryResult['idUsers']);
       }
     }else if(isset($_SESSION['isLogged'])){ /* already logged in */
       if(isset($_SESSION['isAdmin'])) static::$userState = UserState::Admin;
