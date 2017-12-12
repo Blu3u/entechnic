@@ -1,41 +1,100 @@
-drop database if exists entechnic;
-create database entechnic;
+DROP DATABASE entechnic;
+CREATE DATABASE entechnic;
+USE entechnic;
 
-use entechnic;
-
-CREATE TABLE IF NOT EXISTS mult_choice_questions (
-	id int auto_increment primary key,
-    question varchar(256) not null,
-    a varchar(256) not null,
-    b varchar(256) not null,
-    c varchar(256) not null,
-    d varchar(256) not null,
-    correct char(1) not null
+CREATE TABLE Chapters (
+  idChapters INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  chapterDescription VARCHAR(1024) NULL,
+  chapterName VARCHAR(128) NULL,
+  chapterNumber INTEGER UNSIGNED NULL,
+  PRIMARY KEY(idChapters)
 );
 
-CREATE TABLE IF NOT EXISTS gap_questions (
-	id int auto_increment primary key
+CREATE TABLE Users (
+  idUsers INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  userName VARCHAR(32) NULL,
+  userMail VARCHAR(128) NULL,
+  userPassword VARCHAR(256) NULL,
+  userPrivileges INTEGER UNSIGNED ZEROFILL NULL,
+  PRIMARY KEY(idUsers)
 );
 
-CREATE TABLE IF NOT EXISTS gaps (
-	id int auto_increment primary key,
-    gap_question_id int not null,
-    foreign key(gap_question_id) references gap_questions(id),
-    content varchar(256) not null,
-    is_gap bool
+CREATE TABLE UserProfiles (
+  idUserProfiles INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  Users_idUsers INTEGER UNSIGNED NOT NULL,
+  userFirstName VARCHAR(64) NULL,
+  userLastName VARCHAR(64) NULL,
+  userDescription VARCHAR(1024) NULL,
+  userRegistrationDate DATE NULL,
+  userAvatarIndex INTEGER UNSIGNED ZEROFILL NULL,
+  PRIMARY KEY(idUserProfiles),
+  FOREIGN KEY(Users_idUsers)
+    REFERENCES Users(idUsers)
+      ON DELETE NO ACTION
+      ON UPDATE NO ACTION
 );
 
-insert into mult_choice_questions values
-	(null, 'Question content asasas?', 'a answer', 'b answer', 'c answer', 'd answer', 'a'),
-	(null, 'Question content second?', 'a aaaaanswer', 'b bbanswer', 'c ccanswer', 'd ddanswer', 'a');
+CREATE TABLE UserProgress (
+  idUserProgress INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  Users_idUsers INTEGER UNSIGNED NOT NULL,
+  userLevel INTEGER UNSIGNED ZEROFILL NULL,
+  userRank INTEGER UNSIGNED ZEROFILL NULL,
+  PRIMARY KEY(idUserProgress),
+  FOREIGN KEY(Users_idUsers)
+    REFERENCES Users(idUsers)
+      ON DELETE NO ACTION
+      ON UPDATE NO ACTION
+);
 
-insert into gap_questions values
-	(null),
-    (null);
+CREATE TABLE Exams (
+  idExams INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  Chapters_idChapters INTEGER UNSIGNED NOT NULL,
+  examName VARCHAR(128) NULL,
+  examDescription VARCHAR(1024) NULL,
+  examNumber INTEGER UNSIGNED NULL,
+  PRIMARY KEY(idExams),
+  FOREIGN KEY(Chapters_idChapters)
+    REFERENCES Chapters(idChapters)
+      ON DELETE NO ACTION
+      ON UPDATE NO ACTION
+);
 
-insert into gaps values
-	(null, 1, 'First part', false),
-	(null, 1, 'first gap', true),
-	(null, 1, '2nd part', false),
-	(null, 1, '2nd gap', true),
-	(null, 1, 'third part', false);
+CREATE TABLE Exercises (
+  idExercises INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  Exams_idExams INTEGER UNSIGNED NOT NULL,
+  exerciseTitle VARCHAR(512) NULL,
+  exerciseDescription VARCHAR(2048) NULL,
+  exerciseCorrectAnswer VARCHAR(64) NULL,
+  exerciseType INTEGER UNSIGNED ZEROFILL NULL,
+  PRIMARY KEY(idExercises),
+  FOREIGN KEY(Exams_idExams)
+    REFERENCES Exams(idExams)
+      ON DELETE NO ACTION
+      ON UPDATE NO ACTION
+);
+
+CREATE TABLE UserCompletedExams (
+  idUserCompletedExams INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  Exams_idExams INTEGER UNSIGNED NOT NULL,
+  UserProgress_idUserProgress INTEGER UNSIGNED NOT NULL,
+  PRIMARY KEY(idUserCompletedExams),
+  FOREIGN KEY(UserProgress_idUserProgress)
+    REFERENCES UserProgress(idUserProgress)
+      ON DELETE NO ACTION
+      ON UPDATE NO ACTION,
+  FOREIGN KEY(Exams_idExams)
+    REFERENCES Exams(idExams)
+      ON DELETE NO ACTION
+      ON UPDATE NO ACTION
+);
+
+CREATE TABLE Answers (
+  idAnswers INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  Exercises_idExercises INTEGER UNSIGNED NOT NULL,
+  answerDescription VARCHAR(256) NULL,
+  PRIMARY KEY(idAnswers),
+  FOREIGN KEY(Exercises_idExercises)
+    REFERENCES Exercises(idExercises)
+      ON DELETE NO ACTION
+      ON UPDATE NO ACTION
+);
