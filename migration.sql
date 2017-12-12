@@ -2,13 +2,7 @@ DROP DATABASE entechnic;
 CREATE DATABASE entechnic;
 USE entechnic;
 
-CREATE TABLE Chapters (
-  idChapters INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-  chapterDescription VARCHAR(1024) NULL,
-  chapterName VARCHAR(128) NULL,
-  chapterNumber INTEGER UNSIGNED NULL,
-  PRIMARY KEY(idChapters)
-);
+-- USER STUFF
 
 CREATE TABLE Users (
   idUsers INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -48,13 +42,23 @@ CREATE TABLE UserProgress (
       ON UPDATE NO ACTION
 );
 
-CREATE TABLE Exams (
-  idExams INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+-- CHAPTERS SUBJECTS AND QUESTIONS WITH ANSWERS
+
+CREATE TABLE Chapters (
+  idChapters INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  chapterDescription VARCHAR(1024) NULL,
+  chapterName VARCHAR(128) NULL,
+  chapterNumber INTEGER UNSIGNED NULL,
+  PRIMARY KEY(idChapters)
+);
+
+CREATE TABLE Subjects (
+  idSubjects INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
   Chapters_idChapters INTEGER UNSIGNED NOT NULL,
-  examName VARCHAR(128) NULL,
-  examDescription VARCHAR(1024) NULL,
-  examNumber INTEGER UNSIGNED NULL,
-  PRIMARY KEY(idExams),
+  subjectDescription VARCHAR(1024) NULL,
+  subjectName VARCHAR(128) NULL,
+  subjectNumber INTEGER UNSIGNED NULL,
+  PRIMARY KEY(idSubjects),
   FOREIGN KEY(Chapters_idChapters)
     REFERENCES Chapters(idChapters)
       ON DELETE NO ACTION
@@ -63,29 +67,14 @@ CREATE TABLE Exams (
 
 CREATE TABLE Exercises (
   idExercises INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-  Exams_idExams INTEGER UNSIGNED NOT NULL,
+  Subjects_idSubjects INTEGER UNSIGNED NOT NULL,
   exerciseTitle VARCHAR(512) NULL,
   exerciseDescription VARCHAR(2048) NULL,
   exerciseCorrectAnswer VARCHAR(64) NULL,
   exerciseType VARCHAR(64) NULL,
   PRIMARY KEY(idExercises),
-  FOREIGN KEY(Exams_idExams)
-    REFERENCES Exams(idExams)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION
-);
-
-CREATE TABLE UserCompletedExams (
-  idUserCompletedExams INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-  Exams_idExams INTEGER UNSIGNED NOT NULL,
-  UserProgress_idUserProgress INTEGER UNSIGNED NOT NULL,
-  PRIMARY KEY(idUserCompletedExams),
-  FOREIGN KEY(UserProgress_idUserProgress)
-    REFERENCES UserProgress(idUserProgress)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION,
-  FOREIGN KEY(Exams_idExams)
-    REFERENCES Exams(idExams)
+  FOREIGN KEY(Subjects_idSubjects)
+    REFERENCES Subjects(idSubjects)
       ON DELETE NO ACTION
       ON UPDATE NO ACTION
 );
@@ -102,18 +91,42 @@ CREATE TABLE Answers (
       ON UPDATE NO ACTION
 );
 
+-- USER COMPLETIONS
+
+CREATE TABLE UserCompletedChapters (
+  idUserCompletedChapters INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  Chapters_idChapters INTEGER UNSIGNED NOT NULL,
+  PRIMARY KEY(idUserCompletedChapters),
+  FOREIGN KEY(Chapters_idChapters)
+    REFERENCES Chapters(idChapters)
+      ON DELETE NO ACTION
+      ON UPDATE NO ACTION
+);
+
+CREATE TABLE UserCompletedSubjects (
+  idUserCompletedSubjects INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  Subjects_idSubjects INTEGER UNSIGNED NOT NULL,
+  PRIMARY KEY(idUserCompletedSubjects),
+  FOREIGN KEY(Subjects_idSubjects)
+    REFERENCES Subjects(idSubjects)
+      ON DELETE NO ACTION
+      ON UPDATE NO ACTION
+);
+
 -- INSERTS
 
 INSERT INTO Chapters VALUES
   (null, null, null, null);
 
-INSERT INTO Exams VALUES
+INSERT INTO Subjects VALUES
+  (null, 1, null, null, null),
+  (null, 1, null, null, null),
   (null, 1, null, null, null);
 
 INSERT INTO Exercises VALUES
-  (null, 1, 'Example title', 'Example description', 'Example correct answer', 'mult'),
-  (null, 1, 'Example title2', 'Example description2', 'Example correct answer2', 'mult'),
-  (null, 1, 'Example title3', 'Example description3', 'Example correct answer3', 'mult');
+  (null, 1, 'Example title', 'Example description', 'a', 'mult'),
+  (null, 2, 'Example title2', 'Example description2', 'b', 'mult'),
+  (null, 3, 'Example title3', 'Example description3', 'c', 'mult');
 
 INSERT INTO Answers VALUES
   (null, 1, 'First q first ans', 'a'),
@@ -123,7 +136,7 @@ INSERT INTO Answers VALUES
   (null, 2, 'Second q first ans', 'a'),
   (null, 2, 'Second q second ans', 'b'),
   (null, 2, 'Second q third ans', 'c'),
-  (null, 3, 'Second q fourth ans', 'd'),
+  (null, 2, 'Second q fourth ans', 'd'),
   (null, 3, 'Third q first ans', 'a'),
   (null, 3, 'Third q second ans', 'b'),
   (null, 3, 'Third q third ans', 'c'),

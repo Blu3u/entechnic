@@ -1,93 +1,61 @@
-<?php 
+<?php
+
+function dd($a) {
+    die(json_encode($a));
+}
+
 class multChoiceQuestion {
-    
-    public $id = 1;
 
-    function __construct($row) {
-        $this->id = $row['id'];
-        $this->question = $row['question'];
-        $this->correct = $row['correct'];
-        $this->ans['a'] = $row['a'];
-        $this->ans['b'] = $row['b'];
-        $this->ans['c'] = $row['c'];
-        $this->ans['d'] = $row['d'];
+    function __construct($data) {
+        if (!$data) return;
+
+        $this->idExercises = $data['idExercises'];
+
+        $subject = MySQLInterface::Exec('SELECT * FROM `Subjects` WHERE `idSubjects` = ' . $data['Subjects_idSubjects']);
+        $this->Chapters_idChapters = $subject['Chapters_idChapters'];
+
+        $this->Subjects_idSubjects = $data['Subjects_idSubjects'];
+        $this->exerciseTitle = $data['exerciseTitle'];
+        $this->exerciseDescription = $data['exerciseDescription'];
+        $this->exerciseCorrectAnswer = $data['exerciseCorrectAnswer'];
+
+        $rows = MySQLInterface::Exec('SELECT * FROM `Answers` WHERE `Exercises_idExercises` = ' . $this->idExercises);
+
+        $this->content = [];
+
+        foreach ($rows as $row) {
+            $this->content[] = [
+                'idAnswers' => $row['idAnswers'],
+                'answerDescription' => $row['answerDescription'],
+                'answerIndex' => $row['answerIndex'],
+            ];
+        }
     }
     
-    function go() {
-        //
-    }
-
-    function showResult($answer) {
-        $res = '';
-        $res .= '
-            <div style="padding: 5px; margin: 5px; border: 1px solid black;"><form>
-            <input type="hidden" name="question" value="mult">
-            <input type="hidden" name="id" value="'.$this->id.'">
-            <h3>'.$this->question.'</h3>
-        ';
-
-        if ($this->correctAnswer($answer)) {
-            $res .= '<h4 style="color: lime">Your answer was correct!</h4>';
-        } else {
-            $res .= '<h4 style="color: red">Your answer was incorrect!</h4>';
-        }
-        
-        foreach ($this->ans as $key => $value) {
-            $res .= $key.'<label ';
-            if ($key == $this->correct) { $res .= 'style="color: lime"'; }
-            $res .= '><input type="radio" name="answer" value="'.$key.'" disabled="disabled"';
-            if ($key == $answer) { $res .= 'checked'; }
-            $res .= '>'.$value.'</label><br>';
-        }
-        $res .= '<a href="/?question=mult"><button>Next question</button></a></form></div>';
-
-        echo $res;
-    }
-
-    function correctAnswer($answer) {
-        if ($this->correct == $answer) {
-            return true;
-        }
-        return false;
+    function getRandom() {
+        $row = MySQLInterface::Exec("SELECT * FROM `Exercises` ORDER BY RAND() LIMIT 1");
+        return new multChoiceQuestion($row);
     }
 
     function getById($id) {
-        $conn = new mysqli('localhost', 'root', '', 'entechnic');
-        $conn->set_charset('utf8');
-
-        $sql = 'SELECT * FROM `mult_choice_questions` WHERE id = '.$id;
-        
-        $row = $conn->query($sql)->fetch_assoc();
-        
+        $row = MySQLInterface::Exec("SELECT * FROM `Exercises` WHERE `idExercises` = $id");
         return new multChoiceQuestion($row);
     }
 
-    function getRandom() {
-        $conn = new mysqli('localhost', 'root', '', 'entechnic');
-        $conn->set_charset('utf8');
-
-        $sql = "SELECT * FROM `mult_choice_questions` ORDER BY RAND() LIMIT 1";
-
-        $row = $conn->query($sql)->fetch_assoc();
-
+    function getRandomBySubject($subject_id) {
+        $row = MySQLInterface::Exec("SELECT * FROM `Exercises` WHERE `Subjects_idSubjects` = $subject_id ORDER BY RAND() LIMIT 1");
         return new multChoiceQuestion($row);
     }
-    function show() {
-        $res = "";
-        $res .= '
-            <div style="padding: 5px; margin: 5px; border: 1px solid black;"><form>
-            <input type="hidden" name="question" value="mult">
-            <input type="hidden" name="id" value="'.$this->id.'">
-            <h3>'.$this->question.'</h3>
-        ';
-        foreach ($this->ans as $key => $value) {
-            $res .= '<label><input type="radio" name="answer" value="'.$key.'">'.$value.'</label><br>';
+
+    function getRandomByChapter($chapter_id) {
+        $row = MySQLInterface::Exec("SELECT * FROM `Exercises` WHERE `Subjects_idSubjects` IN ( SELECT `idSubjects` FROM `Subjects` WHERE `Chapters_idChapters` = $chapter_id) ORDER BY RAND() LIMIT 1");
+        return new multChoiceQuestion($row);
+    }
+
+    function correctAnswer($answer) {
+        if ($this->exerciseCorrectAnswer == $answer) {
+            return true;
         }
-        $res .= '
-            <input type="submit">
-            </form></div>
-        ';
-
-        echo $res;
+        return false;
     }
 }
