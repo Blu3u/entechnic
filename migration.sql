@@ -67,7 +67,7 @@ CREATE TABLE Exercises (
   exerciseTitle VARCHAR(512) NULL,
   exerciseDescription VARCHAR(2048) NULL,
   exerciseCorrectAnswer VARCHAR(64) NULL,
-  exerciseType INTEGER UNSIGNED ZEROFILL NULL,
+  exerciseType VARCHAR(64) NULL,
   PRIMARY KEY(idExercises),
   FOREIGN KEY(Exams_idExams)
     REFERENCES Exams(idExams)
@@ -101,3 +101,30 @@ CREATE TABLE Answers (
       ON DELETE NO ACTION
       ON UPDATE NO ACTION
 );
+
+-- INSERTS
+
+INSERT INTO Chapters VALUES
+  (null, null, null, null);
+
+INSERT INTO Exams VALUES
+  (null, 1, null, null, null);
+
+INSERT INTO Exercises VALUES
+  (null, 1, 'Example title', 'Example description', 'Example correct answer', 'mult'),
+  (null, 1, 'Example title2', 'Example description2', 'Example correct answer2', 'mult'),
+  (null, 1, 'Example title3', 'Example description3', 'Example correct answer3', 'mult');
+
+INSERT INTO Answers VALUES
+  (null, 1, 'First q first ans', 'a'),
+  (null, 1, 'First q second ans', 'b'),
+  (null, 1, 'First q third ans', 'c'),
+  (null, 1, 'First q fourth ans', 'd'),
+  (null, 2, 'Second q first ans', 'a'),
+  (null, 2, 'Second q second ans', 'b'),
+  (null, 2, 'Second q third ans', 'c'),
+  (null, 3, 'Second q fourth ans', 'd'),
+  (null, 3, 'Third q first ans', 'a'),
+  (null, 3, 'Third q second ans', 'b'),
+  (null, 3, 'Third q third ans', 'c'),
+  (null, 3, 'Third q fourth ans', 'd');
