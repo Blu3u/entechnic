@@ -1,0 +1,93 @@
+.text
+{
+  text-align: justify;
+  color: white;
+  opacity:1;
+  float: left;
+  padding: 4%;
+  opacity: 0;
+  margin-left: +750px;
+}
+
+.text1
+{
+  text-align: justify;
+  color: white;
+  opacity:1;
+  float: right;
+  padding: 4%;
+  opacity: 0;
+  margin-right: -750px;
+}
+
+.text2
+{
+  text-align: justify;
+  color: white;
+  opacity:1;
+  float: left;
+  padding: 4%;
+  opacity: 0;
+  margin-left: -750px;
+}
+
+.text3
+{
+  text-align: justify;
+  color: white;
+  opacity:1;
+  float: right;
+  padding: 4%;
+  opacity: 0;
+  margin-right: +750px;
+}
+
+.text img
+{
+  width: 100%;
+  box-shadow: 0 0 15px #fff;
+  border-radius: 5px;
+  position: relative;
+  z-index: 0;
+}
+
+.text1 img
+{
+  width: 100%;
+  box-shadow: 0 0 15px #fff;
+  border-radius: 5px;
+  position: relative;
+  z-index: 0;
+}
+
+.text2 img
+{
+  width: 100%;
+  box-shadow: 0 0 15px #fff;
+  border-radius: 5px;
+  position: relative;
+  z-index: 0;
+}
+
+canvas
+{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+.welcome
+{
+  text-align: center;
+  height: 60vh;
+  color: white;
+  margin-top: 22%;
+}
+
+.clearfix h1
+{
+  color: #fff;
+  text-align: center;
+}

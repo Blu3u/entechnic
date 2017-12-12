@@ -1,0 +1,103 @@
+canvas
+{
+  z-index: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
+.dsc
+{
+    width: 50%;
+    float: left;
+}
+
+.dsc p
+{
+    text-align: justify;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    line-height: 150%;
+}
+
+.dsc input[type="text"]{
+      border-radius: 3px;
+      border: 1px solid #838383;
+      padding: 5px;
+      font-size: 15px;
+      margin: 2px 0 10px;
+      width: 100%;
+      text-align: center;
+      font-family: 'Arial', sans-serif;
+      font-size: 1.1em;}
+
+#form{
+    border:1px #bdbdbd solid;
+    border-radius: 10px;
+    width: 100%;
+    height: auto;
+    background-color: rgba(18, 18, 18, 0.8);;
+    padding: 25px;
+    z-index: 1;
+    position: relative;
+}
+
+iframe
+{
+    margin: 5% 10% 2%;
+    border-radius: 10px;
+    background-color: #000;
+    z-index: 1;
+    position: relative;
+}
+
+.welcome
+{
+  text-align: center;
+  height: 50vh;
+  color: white;
+  margin-top: 22%;
+}
+
+.text
+{
+  color: white;
+  padding: 5%;
+  opacity:0;
+}
+
+.text p
+{
+  text-align: justify;
+}
+
+label
+{
+  width: 100%;
+}
+
+#cbtn
+{
+  width: 100%;
+}
+
+textarea
+{
+  border-radius: 3px;
+  border: 1px solid #838383;
+  padding: 5px;
+  font-size: 15px;
+  margin: 2px 0 10px;
+  width: 100%;
+  text-align: center;
+  font-family: 'Arial', sans-serif;
+  font-size: 1.1em;
+}
+
+.com
+{
+  color: #fff;
+  padding-top: 5%;
+  text-align: center;
+}

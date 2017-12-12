@@ -1,0 +1,112 @@
+body
+{
+    margin: 0;
+    padding: 0;
+    background-color: #000;
+    font-family:sans-serif;
+    font-family: 'Comfortaa', cursive;
+    overflow-x:hidden;
+top: 0 !important;
+}
+
+/**********  NAV  ***********/
+#navMain
+  {
+    width: 100vw;
+    background-color: black ;/*#212121*/
+    //*border-bottom: 3px solid #bdbdbd;*/
+    overflow:visible;
+    position: fixed;
+    left: 0;
+    top: 0;
+	z-index: 10;
+}
+
+.nav-link, .nav-link:active
+{
+  background: none;
+  border:none;
+}
+
+#logo
+{
+    width: 250px;
+    height: 75px;
+
+}
+
+.nav-item .nav-link
+{
+    text-align: center;
+    transition:0.2s ease-in-out;
+    transition-delay: 0s;
+}
+
+#navMain .nav-item:hover .nav-link
+{
+    transform: scale(1.15);
+    color: white !important;
+}
+
+.navbar-nav li
+{
+  margin:0 10px 0 10px;
+  font-size: 19px;
+}
+
+/**********  STOPKA  ***********/
+footer
+{
+  color: #fff;
+  float:right;
+  padding-right: 3%;
+  padding-top: 0.3%;
+}
+
+footer p
+{
+  font-size: 1.1em;
+}
+
+footer p span
+{
+  font-style: italic;
+  font-size: 0.7em;
+}
+
+/**********  FORMULARZ REJESTRACJI  ***********/
+.progress-bar{
+  transition: 0.35s !important;
+}
+
+.progress{
+  width: 100%;
+    margin-top: 10px;
+}
+
+.has-danger input
+{
+  border-color: red;
+}
+
+.has-danger
+{
+  color: red;
+}
+
+.has-success
+{
+  color: green;
+}
+
+.form-control-feedback{
+  font-size: small;
+}
+
+/**********    ***********/
+
+/**********  PRZYGOTOWANE KLASY  ***********/
+.clear
+{
+    clear: both;
+}

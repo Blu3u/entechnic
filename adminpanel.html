@@ -1,0 +1,270 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="css/admin.css" />
+    <link rel="stylesheet" href="css/mainPanel.css" />
+    <link href="https://fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet">
+</head>
+<body class="container-fluid">
+  <canvas id="nokey" width="100%" height="100vh">
+      Your Browser Don't Support Canvas, Please Download Chrome ^_^``
+  </canvas>
+<!--    NAV   -->
+
+    <nav class="navbar navbar-expand-md navbar-dark" id="navMain">
+        <a class="navbar-brand" href="index.html"><img src="img/" alt="logo" /></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navBtns" ><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse justify-content-md-end" id="navBtns">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a href="index.html" class="nav-link navpos" id="home">Home</a>
+            </li>
+            <li class="nav-item">
+              <a href="contact.html" class="nav-link navpos" id="contact">Contact</a>
+            </li>
+          </ul>
+        </div>
+
+    </nav>
+      <div id="barSlide">
+      </div>
+    <div id="chapNav">
+      <div class="list-group">
+        <button class="list-group-item">
+          Select your subject:
+        </button>
+        <div class="list-group-item">Chapter 1:
+          <div class="progress">
+            <div class="progress-bar progress-bar-animated progress-bar-striped bg-warning"></div>
+          </div>
+        <div class="list-group">
+          <div class="list-group-item list-group-item-success" id="1.1">Subject 1:</div>
+          <div class="list-group-item list-group-item-success" id="1.2">Subject 2:</div>
+          <div class="list-group-item list-group-item-success" id="1.3">Subject 3:</div>
+          <div class="list-group-item list-group-item-success" id="1.4">Subject 4:</div>
+        </div>
+        </div>
+        <div class="list-group-item">Chapter 2:
+          <div class="progress">
+            <div class="progress-bar progress-bar-animated progress-bar-striped bg-warning"></div>
+          </div>
+          <div class="list-group">
+          <div class="list-group-item list-group-item-success">Subject 1:</div>
+          <div class="list-group-item">Subject 2:</div>
+          <div class="list-group-item">Subject 3:</div>
+          <div class="list-group-item">Subject 4:</div>
+        </div></div>
+        <div class="list-group-item">Chapter 3:
+          <div class="progress">
+            <div class="progress-bar progress-bar-animated progress-bar-striped bg-warning"></div>
+          </div>
+          <div class="list-group">
+            <div class="list-group-item">Subject 1:</div>
+            <div class="list-group-item">Subject 2:</div>
+            <div class="list-group-item">Subject 3:</div>
+            <div class="list-group-item">Subject 4:</div>
+          </div></div>
+        <div class="list-group-item">Chapter 4:
+          <div class="progress">
+            <div class="progress-bar progress-bar-animated progress-bar-striped bg-warning"></div>
+          </div>
+          <div class="list-group">
+            <div class="list-group-item">Subject 1:</div>
+            <div class="list-group-item">Subject 2:</div>
+            <div class="list-group-item">Subject 3:</div>
+            <div class="list-group-item">Subject 4:</div>
+          </div></div>
+        <div class="list-group-item">Chapter 5:
+          <div class="progress">
+            <div class="progress-bar progress-bar-animated progress-bar-striped bg-warning"></div>
+          </div>
+        <div class="list-group">
+          <div class="list-group-item">Subject 1:</div>
+          <div class="list-group-item">Subject 2:</div>
+          <div class="list-group-item">Subject 3:</div>
+          <div class="list-group-item">Subject 4:</div>
+        </div>
+        </div>
+      </div>
+    </div>
+  <div class="main container-fluid">
+    <div class="row justify-content-around">
+      <div class="col-1"></div>
+<!--    LIST   -->
+      <div class="col-2 " id="optList">
+          <div class="list-group">
+            <button class="list-group-item">
+              Modify content:
+            </button>
+            <button class="list-group-item list-group-item-action active" id="chapter">
+              Chapter
+            </button>
+            <button class="list-group-item list-group-item-action" id="subject">
+              Subject
+            </button>
+            <button class="list-group-item list-group-item-action" id="excercise">
+              Excercise
+            </button>
+            <button class="list-group-item list-group-item-action" id="user">
+              User
+            </button>
+            <button class="list-group-item ">
+            </button>
+          </div>
+      </div>
+
+      <div class="col-6" >
+        <div class="load"></div>
+<!--    OptNav   --><div id="optSel">
+        <ul class="nav nav-tabs" id="tab">
+          <li class="nav-item "><a class="nav-link active " data-toogle="tab" href="#browse" role="tab" id="browseOpt">Browse</a></li>
+          <li class="nav-item"><a class="nav-link " data-toogle="tab" href="#add" role="tab">Add</a></li>
+          <li class="nav-item"><a class="nav-link " data-toogle="tab" href="#edit" role="tab" id="editOpt">Edit</a></li>
+        </ul>
+<!--    OptTab   -->
+        <div class="tab-content" id="optDiv">
+          <div id="alertBox"></div>
+          <div class="tab-pane fade show active" id="browse" role="tabpanel">
+            <table class="table table-hover" id="field">
+              <thead>
+                <tr id="tab-search">
+                  <td>
+                  </td>
+                  <td>
+                    <input type="text"class="form-control" id="search" placeholder="Search for number" />
+                  </td>
+                  <td>
+                    <input type="text"class="form-control" id="search" placeholder="Search for name" />
+                  </td>
+                  <td>
+
+                  </td>
+                  <td>
+
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    #
+                  </th>
+                  <th>
+                    Chapter no.
+                  </th>
+                  <th>
+                    Chapter name
+                  </th>
+                  <th>
+                    Edit
+                  </th>
+                  <th>
+                    Delete
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="tab-cont">
+                <tr>
+                  <td class="id">1</td>
+                  <td class="cNo">a</td>
+                  <td class="cName">b</td>
+                  <td>
+                    <a href="#" class=" editBtn">Edit</a>
+                  </td>
+                  <td class="deleteBtn">
+                    <button type="button" class="close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="id">2</td>
+                  <td class="cNo">d</td>
+                    <td class="cName">c</td>
+                  <td>
+                    <a href="#" class="editBtn">Edit</a>
+                  </td>
+                  <td class="deleteBtn">
+                    <button type="button" class="close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+<!--    OptTab   -->
+          <div class="tab-pane fade" id="add" role="tabpanel">
+            <div class="form-group">
+              <label for="addChapterNo">Chapter number:</label>
+              <input type="text" class="form-control" id="addChapterNo" placeholder="Enter chapter number here..."/>
+              <div class="form-control-feedback"></div>
+            </div>
+            <div class="form-group">
+              <label for="addChapterName">Chapter name:</label>
+              <input type="text" class="form-control" id="addChapterName" placeholder="Enter chapter name here..."/>
+            </div>
+            <div id="acctionsAdd">
+              <button name="reset" class="btn">Reset</button>
+              <button id="addBtn" class="btn btn-primary">Add</button>
+            </div>
+            <div class="form-group">
+              <label for="selectChapter">Select chater:</label>
+              <select class="form-control" id="selectChapter">
+                <option selected>
+                  Choose subject...
+                </option>
+                <optgroup label="Chapter 1:">
+                  <option>
+                    Subject 1
+                  </option>
+                  <option>
+                    Subject 2
+                  </option>
+                </optgroup>
+
+              </select>
+              <div class="form-control-feedback"></div>
+            </div>
+          </div>
+<!--    OptTab   -->
+          <div class="tab-pane fade" id="edit" role="tabpanel">
+            <div class="form-group">
+              <label for="addChapterNo">Chapter number:</label>
+              <input type="text" class="form-control" id="editChapterNo" placeholder="Enter chapter number here..."/>
+              <div class="form-control-feedback"></div>
+            </div>
+            <div class="form-group">
+              <label for="addChapterName">Chapter name:</label>
+              <input type="text" class="form-control" id="editChapterName" placeholder="Enter chapter name here..."/>
+            </div>
+            <div id="acctionsAdd">
+              <button id="returnBtn" data-toggle="tab" data-target="#browse" role="tab" class="btn ">Return</button>
+              <button id="saveBtn" class="btn btn-primary">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="col-1"></div>
+    </div>
+    <div>
+    </div>
+  </div>
+
+
+
+      <script src="js/canvas.js"></script>
+      <script src="js/chapNav.js"></script>
+      <script src="js/adminpanel.js"></script>
+</body>
+</html>

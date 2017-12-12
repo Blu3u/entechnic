@@ -43,7 +43,7 @@ class MySQLInterface{
     }
     catch (PDOException $exception) {
         print $exception->getMessage();
-        die('Database connection error. Try again later!');
+        //die('Database connection error. Try again later!');
     }
   }
 }
