@@ -1,143 +1,170 @@
-DROP DATABASE entechnic;
 CREATE DATABASE entechnic;
 USE entechnic;
 
 -- USER STUFF
 
-CREATE TABLE Users (
-  idUsers INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-  userName VARCHAR(32) NULL,
-  userMail VARCHAR(128) NULL,
-  userPassword VARCHAR(256) NULL,
-  userPrivileges INTEGER UNSIGNED ZEROFILL NULL,
-  PRIMARY KEY(idUsers)
+CREATE TABLE users (
+  idUser INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  firstName VARCHAR(20) NOT NULL,
+  lastName VARCHAR(35) NOT NULL,
+  username VARCHAR(27) NOT NULL,
+  mail VARCHAR(60) NOT NULL,
+  userPassword VARCHAR(256) NOT NULL,
+  userPrivileges INTEGER UNSIGNED ZEROFILL NOT NULL,
+  birthDate date,
+  signUpDate timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  gender enum('f','m'),
+  avatarId  int unsigned DEFAULT 1,
+  description text,
+  PRIMARY KEY(idUser)
 );
 
-CREATE TABLE UserProfiles (
-  idUserProfiles INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-  Users_idUsers INTEGER UNSIGNED NOT NULL,
-  userFirstName VARCHAR(64) NULL,
-  userLastName VARCHAR(64) NULL,
-  userDescription VARCHAR(1024) NULL,
-  userRegistrationDate DATE NULL,
-	userBirthDate DATE NULL,
-	userGender DATE NULL,
-  userAvatarIndex INTEGER UNSIGNED ZEROFILL NULL,
-  PRIMARY KEY(idUserProfiles),
-  FOREIGN KEY(Users_idUsers)
-    REFERENCES Users(idUsers)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION
+CREATE TABLE classes (
+	idClass INTEGER UNSIGNED NOT NULL AUTO_INCREMENT primary KEY,
+  teacherId INTEGER UNSIGNED NOT NULL,
+  FOREIGN KEY (teacherId) references users(idUser)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE   
 );
 
-CREATE TABLE UserProgress (
+CREATE TABLE students(
+	userId INTEGER UNSIGNED NOT NULL,
+  classId INTEGER UNSIGNED NOT NULL,
+  FOREIGN KEY (userId) references users(idUser)
+		ON UPDATE CASCADE
+    ON DELETE CASCADE,
+	FOREIGN KEY (classId) references classes(idClass)
+		ON UPDATE CASCADE
+    ON DELETE CASCADE
+);
+CREATE TABLE avatars (
+	idAvatar INTEGER UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  avatarPath varchar(16)
+);
+
+CREATE TABLE usersAvatars(
+	userId INTEGER UNSIGNED NOT NULL,
+  avatarId INTEGER UNSIGNED NOT NULL,
+  foreign key (userId) references Users(idUser)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  foreign key (avatarId) references avatars(idAvatar)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE userStatus (
   idUserProgress INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-  Users_idUsers INTEGER UNSIGNED NOT NULL,
-  userLevel INTEGER UNSIGNED ZEROFILL NULL,
-  userRank INTEGER UNSIGNED ZEROFILL NULL,
+  userId INTEGER UNSIGNED NOT NULL,
+  level INTEGER UNSIGNED ZEROFILL NULL,
+  points INTEGER UNSIGNED ZEROFILL NULL,
   PRIMARY KEY(idUserProgress),
-  FOREIGN KEY(Users_idUsers)
-    REFERENCES Users(idUsers)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION
+  FOREIGN KEY(userId) REFERENCES Users(idUser)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 );
 
 -- CHAPTERS SUBJECTS AND QUESTIONS WITH ANSWERS
 
-CREATE TABLE Chapters (
-  idChapters INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-  chapterDescription VARCHAR(1024) NULL,
-  chapterName VARCHAR(128) NULL,
-  chapterNumber INTEGER UNSIGNED NULL,
-  PRIMARY KEY(idChapters)
+CREATE TABLE chapters (
+  idChapter INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  chapterName VARCHAR(64) NOT NULL,
+  chapterNumber INTEGER UNSIGNED NOT NULL,
+  PRIMARY KEY(idChapter)
 );
 
-CREATE TABLE Subjects (
-  idSubjects INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-  Chapters_idChapters INTEGER UNSIGNED NOT NULL,
-  subjectDescription VARCHAR(1024) NULL,
-  subjectName VARCHAR(128) NULL,
-  subjectNumber INTEGER UNSIGNED NULL,
-  PRIMARY KEY(idSubjects),
-  FOREIGN KEY(Chapters_idChapters)
-    REFERENCES Chapters(idChapters)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION
+CREATE TABLE subjects (
+  idSubject INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  subjectName VARCHAR(64) NOT NULL,
+  subjectNumber INTEGER UNSIGNED NOT NULL,
+  chapterId INTEGER UNSIGNED NOT NULL,
+  PRIMARY KEY(idSubject),
+  foreign key (chapterId) REFERENCES chapters(idChapter)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 );
 
-CREATE TABLE Exercises (
-  idExercises INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-  Subjects_idSubjects INTEGER UNSIGNED NOT NULL,
-  exerciseTitle VARCHAR(512) NULL,
-  exerciseDescription VARCHAR(2048) NULL,
-  exerciseCorrectAnswer VARCHAR(64) NULL,
-  exerciseType VARCHAR(64) NULL,
-  PRIMARY KEY(idExercises),
-  FOREIGN KEY(Subjects_idSubjects)
-    REFERENCES Subjects(idSubjects)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION
+CREATE TABLE exercises (
+  idExercise INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  subjectId INTEGER UNSIGNED NOT NULL,
+  name VARCHAR(64) NOT NULL,
+  exerciseDescription text NULL,
+  exerciseCorrectAnswer VARCHAR(64) NOT NULL,
+  exerciseType VARCHAR(64) NOT NULL,
+  PRIMARY KEY(idExercise),
+  FOREIGN KEY(subjectId) REFERENCES Subjects(idSubject)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 );
 
-CREATE TABLE Answers (
-  idAnswers INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-  Exercises_idExercises INTEGER UNSIGNED NOT NULL,
+CREATE TABLE answers (
+  idAnswer INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  excerciseId INTEGER UNSIGNED NOT NULL,
   answerDescription VARCHAR(256) NULL,
-	answerIndex VARCHAR(256) NULL,
-  PRIMARY KEY(idAnswers),
-  FOREIGN KEY(Exercises_idExercises)
-    REFERENCES Exercises(idExercises)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION
+	answerIndex INTEGER(7) UNSIGNED ZEROFILL NOT NULL ,
+  PRIMARY KEY(idAnswer),
+  FOREIGN KEY(excerciseId) REFERENCES Exercises(idExercise)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 );
 
 -- USER COMPLETIONS
 
-CREATE TABLE UserCompletedChapters (
-  idUserCompletedChapters INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-  Chapters_idChapters INTEGER UNSIGNED NOT NULL,
-  PRIMARY KEY(idUserCompletedChapters),
-  FOREIGN KEY(Chapters_idChapters)
-    REFERENCES Chapters(idChapters)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION
+CREATE TABLE userCompletedChapters (
+  idUserCompletedChapter INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  chapterId INTEGER UNSIGNED NOT NULL,
+  chapterAccess bool DEFAULT false,
+  PRIMARY KEY(idUserCompletedChapter),
+  FOREIGN KEY(chapterId) REFERENCES Chapters(idChapter)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 );
 
-CREATE TABLE UserCompletedSubjects (
-  idUserCompletedSubjects INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-  Subjects_idSubjects INTEGER UNSIGNED NOT NULL,
-  PRIMARY KEY(idUserCompletedSubjects),
-  FOREIGN KEY(Subjects_idSubjects)
-    REFERENCES Subjects(idSubjects)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION
+CREATE TABLE userCompletedSubjects (
+  idUserCompletedSubject INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  subjectId INTEGER UNSIGNED NOT NULL,
+  subjectAccess bool DEFAULT false,
+  PRIMARY KEY(idUserCompletedSubject),
+  FOREIGN KEY(subjectId) REFERENCES Subjects(idSubject)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 );
 
--- INSERTS
+CREATE TABLE userCompletedExcercises (
+  idUserCompletedExcercise INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  excerciseId INTEGER UNSIGNED NOT NULL,
+  PRIMARY KEY(idUserCompletedExcercise),
+  FOREIGN KEY(excerciseId) REFERENCES exercises(idExercise)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
 
-INSERT INTO Chapters VALUES
-  (null, null, null, null);
+-- NOTES
 
-INSERT INTO Subjects VALUES
-  (null, 1, null, null, null),
-  (null, 1, null, null, null),
-  (null, 1, null, null, null);
+CREATE TABLE notes(
+	idNote INTEGER UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  picture varchar(64),
+  reading text,
+  listening varchar(64)
+);
 
-INSERT INTO Exercises VALUES
-  (null, 1, 'Example title', 'Example description', 'a', 'mult'),
-  (null, 2, 'Example title2', 'Example description2', 'b', 'mult'),
-  (null, 3, 'Example title3', 'Example description3', 'c', 'mult');
-
-INSERT INTO Answers VALUES
-  (null, 1, 'First q first ans', 'a'),
-  (null, 1, 'First q second ans', 'b'),
-  (null, 1, 'First q third ans', 'c'),
-  (null, 1, 'First q fourth ans', 'd'),
-  (null, 2, 'Second q first ans', 'a'),
-  (null, 2, 'Second q second ans', 'b'),
-  (null, 2, 'Second q third ans', 'c'),
-  (null, 2, 'Second q fourth ans', 'd'),
-  (null, 3, 'Third q first ans', 'a'),
-  (null, 3, 'Third q second ans', 'b'),
-  (null, 3, 'Third q third ans', 'c'),
-  (null, 3, 'Third q fourth ans', 'd');
+CREATE TABLE chapterNotes(
+  noteId INTEGER UNSIGNED NOT NULL,
+  chapterId INTEGER UNSIGNED NOT NULL,
+  FOREIGN KEY (chapterId) REFERENCES chapters(idChapter)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  FOREIGN KEY (noteId) REFERENCES notes(idNote)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+CREATE TABLE excerciseNotes(
+  noteId INTEGER UNSIGNED NOT NULL,
+  excerciseId INTEGER UNSIGNED NOT NULL,
+  FOREIGN KEY (excerciseId) REFERENCES exercises(idExercise)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  FOREIGN KEY (noteId) REFERENCES notes(idNote)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
